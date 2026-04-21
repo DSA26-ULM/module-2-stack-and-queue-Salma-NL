@@ -3,26 +3,35 @@
 
 int main() {
     int n, k;
-    if (!(std::cin >> n >> k)) return 0;
+    std::cin >> n >> k;
 
     int A[MAX];
     for (int i = 0; i < n; i++) {
         std::cin >> A[i];
     }
 
-    for (int i = 0; i <= n - k; i++) {
-        int current_sum = 0;
-        Queue q;
-        init(&q);
+    Queue q;
+    init(&q);
 
-        for (int j = i; j < i + k; j++) {
-            enqueue(&q, A[j]);
-            current_sum += A[j];
-        }
+    int current_sum = 0;
 
-        std::cout << current_sum << (i == n - k ? "" : " ");
+    for (int i = 0; i < k; i++) {
+        enqueue(&q, A[i]);
+        current_sum += A[i];
     }
-    std::cout << std::endl;
 
+    std::cout << current_sum;
+
+    for (int i = k; i < n; i++) {
+        current_sum -= front(&q);
+        dequeue(&q);
+
+        enqueue(&q, A[i]);
+        current_sum += A[i];
+
+        std::cout << " " << current_sum;
+    }
+
+    std::cout << std::endl;
     return 0;
 }
